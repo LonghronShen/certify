@@ -57,7 +57,7 @@ target_compile_features(core INTERFACE cxx_std_11)
 
 target_include_directories(core INTERFACE
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    "${CMAKE_CURRENT_LIST_DIR}/include"
 )
 
 if(MSVC)
