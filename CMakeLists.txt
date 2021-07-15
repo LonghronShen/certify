@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.12)
 project(certify VERSION 0.1 LANGUAGES CXX)
 
 list(INSERT CMAKE_MODULE_PATH 0 ${PROJECT_SOURCE_DIR}/CMakeModules)
@@ -49,21 +49,22 @@ if(NOT ((TARGET OpenSSL::SSL) AND (TARGET OpenSSL::Crypto)))
     endif()
 endif()
 
-add_library(certify::core INTERFACE)
+add_library(certify-core INTERFACE)
+add_library(certify::core ALIAS certify-core)
 
-target_compile_features(certify::core INTERFACE cxx_std_11)
+target_compile_features(certify-core INTERFACE cxx_std_11)
 
-target_include_directories(certify::core INTERFACE
+target_include_directories(certify-core INTERFACE
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
     "${CMAKE_CURRENT_LIST_DIR}/include"
 )
 
 if(MSVC)
-	target_link_libraries(certify::core INTERFACE Crypt32.lib)
+	target_link_libraries(certify-core INTERFACE Crypt32.lib)
 endif()
 
 target_link_libraries(
-    	certify::core
+    	certify-core
     INTERFACE
         Boost::system
         Boost::filesystem
@@ -89,7 +90,7 @@ if(CERTIFY_INSTALL_PACKAGES)
             DESTINATION include
             FILES_MATCHING PATTERN "*.hpp")
 
-    install(TARGETS certify::core
+    install(TARGETS certify-core
             EXPORT certifyTargets
             INCLUDES DESTINATION include)
 
