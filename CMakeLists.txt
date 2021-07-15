@@ -18,12 +18,12 @@ endif()
 include(FetchContent)
 
 find_package(Boost 1.67
-             COMPONENTS
-                system
-                filesystem
-				date_time
-                unit_test_framework
-             REQUIRED)
+	COMPONENTS
+		system
+		filesystem
+		date_time
+		unit_test_framework
+	REQUIRED)
 
 find_package (Threads)
 
@@ -49,23 +49,21 @@ if(NOT ((TARGET OpenSSL::SSL) AND (TARGET OpenSSL::Crypto)))
     endif()
 endif()
 
-add_library(core INTERFACE)
-
 add_library(certify::core ALIAS core)
 
-target_compile_features(core INTERFACE cxx_std_11)
+target_compile_features(certify::core INTERFACE cxx_std_11)
 
-target_include_directories(core INTERFACE
+target_include_directories(certify::core INTERFACE
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
     "${CMAKE_CURRENT_LIST_DIR}/include"
 )
 
 if(MSVC)
-	target_link_libraries(core INTERFACE Crypt32.lib)
+	target_link_libraries(certify::core INTERFACE Crypt32.lib)
 endif()
 
 target_link_libraries(
-    core
+    	certify::core
     INTERFACE
         Boost::system
         Boost::filesystem
@@ -91,7 +89,7 @@ if(CERTIFY_INSTALL_PACKAGES)
             DESTINATION include
             FILES_MATCHING PATTERN "*.hpp")
 
-    install(TARGETS core
+    install(TARGETS certify::core
             EXPORT certifyTargets
             INCLUDES DESTINATION include)
 
