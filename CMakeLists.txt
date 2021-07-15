@@ -49,7 +49,7 @@ if(NOT ((TARGET OpenSSL::SSL) AND (TARGET OpenSSL::Crypto)))
     endif()
 endif()
 
-add_library(certify::core)
+add_library(certify::core INTERFACE)
 
 target_compile_features(certify::core INTERFACE cxx_std_11)
 
